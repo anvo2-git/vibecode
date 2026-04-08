@@ -184,8 +184,8 @@ export function generateRecommendations(
     }
 
     results.sort((a, b) => b[1] - a[1]);
-    // -1 key signals "refined" recommendations
-    grouped[-1] = results.slice(0, recsPerSeed * seeds.length);
+    // -999999 key signals "refined" recommendations (avoid collision with scraped perfume IDs)
+    grouped[-999999] = results.slice(0, recsPerSeed * seeds.length);
   } else {
     // Standard mode: per-seed recommendations
     for (const seed of seeds) {

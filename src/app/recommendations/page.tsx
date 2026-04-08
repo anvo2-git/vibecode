@@ -107,14 +107,14 @@ export default function RecommendationsPage() {
       {Object.entries(recs).map(([seedIdStr, recList]) => {
         const seedId = parseInt(seedIdStr, 10);
         const seedName =
-          seedId === -1
+          seedId === -999999
             ? "Your Refined Taste"
             : getPerfume(seedId, catalog, state.scrapedPerfumes)?.n ?? "Unknown";
 
         return (
           <div key={seedId} className="mb-8">
             <h2 className="font-serif italic text-lg text-stone-500 mb-3">
-              {seedId === -1 ? (
+              {seedId === -999999 ? (
                 "Based on your votes"
               ) : (
                 <>Because you liked <span className="text-stone-700 not-italic font-medium">{seedName}</span></>
