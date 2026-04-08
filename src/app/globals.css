@@ -1,0 +1,12 @@
+@import "tailwindcss";
+
+@theme inline {
+  --font-serif: "EB Garamond", Georgia, serif;
+  --font-sans: "Source Sans 3", system-ui, sans-serif;
+}
+
+body {
+  background: #f7f5f0;
+  color: #1c1c1c;
+  font-family: var(--font-sans);
+}
