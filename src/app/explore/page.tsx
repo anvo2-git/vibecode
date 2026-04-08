@@ -21,6 +21,10 @@ export default function ExplorePage() {
   const [searchResults, setSearchResults] = useState<Perfume[]>([]);
   const [filterResults, setFilterResults] = useState<Perfume[]>([]);
   const [mode, setMode] = useState<"search" | "filter">("search");
+  const [scrapeUrl, setScrapeUrl] = useState("");
+  const [scraping, setScraping] = useState(false);
+  const [scrapeResult, setScrapeResult] = useState<Perfume | null>(null);
+  const [scrapeError, setScrapeError] = useState("");
 
   useEffect(() => {
     Promise.all([loadCatalog(), loadLookup()]).then(([c, l]) => {
@@ -103,6 +107,48 @@ export default function ExplorePage() {
   }
 
   const isPicked = (id: number) => state.picks.some((p) => p.perfumeId === id);
+
+  async function handleScrape() {
+    if (!scrapeUrl.includes("fragrantica.com/perfume/")) {
+      setScrapeError("Please paste a valid Fragrantica perfume URL.");
+      return;
+    }
+    setScraping(true);
+    setScrapeError("");
+    setScrapeResult(null);
+    try {
+      const res = await fetch(`/api/scrape?url=${encodeURIComponent(scrapeUrl)}`);
+      const data = await res.json();
+      if (!res.ok) {
+        setScrapeError(data.error || "Scraping failed.");
+        return;
+      }
+      // Build a Perfume object with a temporary negative ID
+      const tempId = -(state.scrapedPerfumes.length + 1);
+      const perfume: Perfume = {
+        id: tempId,
+        n: data.name,
+        b: data.brand,
+        g: data.gender,
+        r: data.rating,
+        rc: data.ratingCount,
+        aw: data.accords,
+      };
+      setScrapeResult(perfume);
+    } catch {
+      setScrapeError("Network error. Make sure the dev server is running.");
+    } finally {
+      setScraping(false);
+    }
+  }
+
+  function confirmScrapedPerfume() {
+    if (!scrapeResult) return;
+    dispatch({ type: "ADD_SCRAPED_PERFUME", perfume: scrapeResult });
+    dispatch({ type: "ADD_PICK", perfumeId: scrapeResult.id });
+    setScrapeResult(null);
+    setScrapeUrl("");
+  }
 
   if (loading) {
     return (
@@ -256,11 +302,59 @@ export default function ExplorePage() {
         </div>
       )}
 
-      {/* Empty states */}
+      {/* Empty state + Fragrantica scrape fallback */}
       {mode === "search" && query && searchResults.length === 0 && (
-        <div className="text-center py-12 text-stone-500">
-          <p className="mb-2">No perfumes found for &ldquo;{query}&rdquo;</p>
-          <p className="text-sm">Try a different name, or paste a Fragrantica URL to add it.</p>
+        <div className="py-8">
+          <p className="text-center text-stone-500 mb-6">
+            No perfumes found for &ldquo;{query}&rdquo;
+          </p>
+          <div className="bg-white border border-stone-200 rounded-lg p-5 max-w-xl mx-auto">
+            <h3 className="font-serif text-lg font-medium text-stone-900 mb-2">
+              Can&apos;t find it? Import from Fragrantica
+            </h3>
+            <p className="text-sm text-stone-500 mb-3">
+              Paste the Fragrantica URL and we&apos;ll fetch the perfume data for you.
+            </p>
+            <div className="flex gap-2">
+              <input
+                type="text"
+                value={scrapeUrl}
+                onChange={(e) => setScrapeUrl(e.target.value)}
+                placeholder="https://www.fragrantica.com/perfume/..."
+                className="flex-1 px-3 py-2 bg-stone-50 border border-stone-200 rounded-md text-sm text-stone-900 placeholder:text-stone-400 focus:outline-none focus:border-stone-400"
+              />
+              <button
+                onClick={handleScrape}
+                disabled={scraping}
+                className="px-4 py-2 rounded-md bg-stone-900 text-white text-sm hover:bg-stone-700 transition-colors disabled:opacity-50"
+              >
+                {scraping ? "Fetching..." : "Import"}
+              </button>
+            </div>
+            {scrapeError && (
+              <p className="text-sm text-red-600 mt-2">{scrapeError}</p>
+            )}
+            {scrapeResult && (
+              <div className="mt-4 space-y-3">
+                <p className="text-sm text-stone-500">Found this perfume — does it look right?</p>
+                <PerfumeCard perfume={scrapeResult} />
+                <div className="flex gap-2">
+                  <button
+                    onClick={confirmScrapedPerfume}
+                    className="px-4 py-2 rounded-md bg-stone-900 text-white text-sm hover:bg-stone-700 transition-colors"
+                  >
+                    Add to Picks
+                  </button>
+                  <button
+                    onClick={() => setScrapeResult(null)}
+                    className="px-4 py-2 rounded-md border border-stone-300 text-stone-500 text-sm hover:bg-stone-100 transition-colors"
+                  >
+                    Cancel
+                  </button>
+                </div>
+              </div>
+            )}
+          </div>
         </div>
       )}
       {mode === "filter" && selectedAccords.length > 0 && filterResults.length === 0 && (
