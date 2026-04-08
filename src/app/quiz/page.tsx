@@ -105,7 +105,7 @@ export default function QuizPage() {
           ))}
         </div>
 
-        <div className="flex gap-3">
+        <div className="flex flex-wrap gap-3">
           <button
             onClick={goToRecs}
             className="px-5 py-2.5 rounded-lg bg-stone-900 text-white text-sm font-medium hover:bg-stone-700 transition-colors"
@@ -118,6 +118,12 @@ export default function QuizPage() {
           >
             Retake Quiz
           </button>
+          <a
+            href="/build"
+            className="px-5 py-2.5 rounded-lg border border-stone-300 text-stone-600 text-sm hover:bg-stone-100 transition-colors"
+          >
+            Fine-tune in Scent Builder
+          </a>
         </div>
       </div>
     );

@@ -13,8 +13,9 @@ A multi-page Next.js + Tailwind app that recommends perfumes based on accord-bas
 
 | Route | Description |
 |---|---|
-| `/` | Landing page — hero, "how it works", two paths (explore / quiz) |
+| `/` | Landing page — hero, "how it works", three paths (explore / build / quiz) |
 | `/explore` | Search + accord filter builder + picks management |
+| `/build` | Scent builder — pick leading accords + trailing accords, find matching perfumes |
 | `/quiz` | 5-question guided quiz mapping preferences to accords |
 | `/perfume/[id]` | Dynamic route — full perfume detail, personal notes form, similar perfumes |
 | `/recommendations` | Grouped recommendations with thumbs up/down voting and Dirichlet refinement |
@@ -37,8 +38,9 @@ A multi-page Next.js + Tailwind app that recommends perfumes based on accord-bas
 ## Recommendation Engine
 
 1. **Per-seed mode** (no votes): For each picked perfume, use its top-2 accords to pull candidates from the accord lookup, then rank by cosine similarity on accord weight vectors.
-2. **Refined mode** (with votes): Builds a Dirichlet posterior over the accord space — picks set the prior, thumbs-up/down update pseudo-counts. Posterior mean becomes the preference vector for candidate scoring.
+2. **Refined mode** (with votes): Keeps per-seed grouping but re-ranks using a Dirichlet posterior blended with each seed's accords. Vote influence is position-aware — trailing accords (3rd+) get full weight, leading accords (top 2) only adjust when multiple votes converge on them.
 3. **Quiz mode**: Takes the user's top accords, generates (n choose 2) pairs, finds perfumes with high weights in both accords of each pair.
+4. **Build mode**: User selects leading accords (required, disqualify if missing) and trailing accords (tiered bonus). Perfumes with all trailing accords rank in the highest tier; those with some trail next; leading-only rank last.
 
 ## Design
 

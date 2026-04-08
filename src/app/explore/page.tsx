@@ -453,6 +453,16 @@ export default function ExplorePage() {
           No perfumes match all selected accords. Try removing some filters.
         </div>
       )}
+
+      {/* Cross-link to Build */}
+      <div className="mt-8 text-center">
+        <p className="text-sm text-stone-400">
+          Know what you want it to smell like?{" "}
+          <a href="/build" className="text-stone-600 underline underline-offset-2 hover:text-stone-900 transition-colors">
+            Build your ideal scent profile
+          </a>
+        </p>
+      </div>
     </div>
   );
 }

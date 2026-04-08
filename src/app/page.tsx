@@ -17,8 +17,8 @@ export default function HomePage() {
         </p>
       </div>
 
-      {/* Two paths */}
-      <div className="grid md:grid-cols-2 gap-6 mb-16">
+      {/* Three paths */}
+      <div className="grid md:grid-cols-3 gap-6 mb-16">
         <Link
           href="/explore"
           className="group block bg-white border border-stone-200 rounded-xl p-8 hover:border-stone-400 transition-all hover:shadow-sm"
@@ -30,6 +30,19 @@ export default function HomePage() {
           <p className="text-sm text-stone-500 leading-relaxed">
             Search for your favourite perfumes, pick up to 3, and get personalised
             recommendations based on their accord profiles.
+          </p>
+        </Link>
+        <Link
+          href="/build"
+          className="group block bg-white border border-stone-200 rounded-xl p-8 hover:border-stone-400 transition-all hover:shadow-sm"
+        >
+          <div className="text-2xl mb-3">&#127912;</div>
+          <h2 className="font-serif text-xl font-medium text-stone-900 mb-2 group-hover:text-stone-600 transition-colors">
+            I know what I want
+          </h2>
+          <p className="text-sm text-stone-500 leading-relaxed">
+            Describe the scent you&apos;re looking for &mdash; pick the leading accords
+            and trailing notes, and we&apos;ll find perfumes that match.
           </p>
         </Link>
         <Link
