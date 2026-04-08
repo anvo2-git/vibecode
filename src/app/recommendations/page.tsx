@@ -106,19 +106,12 @@ export default function RecommendationsPage() {
       {/* Grouped recommendations */}
       {Object.entries(recs).map(([seedIdStr, recList]) => {
         const seedId = parseInt(seedIdStr, 10);
-        const seedName =
-          seedId === -999999
-            ? "Your Refined Taste"
-            : getPerfume(seedId, catalog, state.scrapedPerfumes)?.n ?? "Unknown";
+        const seedName = getPerfume(seedId, catalog, state.scrapedPerfumes)?.n ?? "Unknown";
 
         return (
           <div key={seedId} className="mb-8">
             <h2 className="font-serif italic text-lg text-stone-500 mb-3">
-              {seedId === -999999 ? (
-                "Based on your votes"
-              ) : (
-                <>Because you liked <span className="text-stone-700 not-italic font-medium">{seedName}</span></>
-              )}
+              Because you liked <span className="text-stone-700 not-italic font-medium">{seedName}</span>
             </h2>
             <div className="grid gap-3">
               {recList.map(([recId, sim]) => {

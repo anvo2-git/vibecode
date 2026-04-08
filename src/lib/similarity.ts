@@ -85,8 +85,27 @@ export function recommendForSeed(
 // which serves as the user's preference vector.
 
 /**
+ * Get the top-N accord names for a perfume, sorted by weight descending.
+ */
+function getTopAccords(perfume: Perfume, n: number): Set<string> {
+  return new Set(
+    Object.entries(perfume.aw)
+      .sort((a, b) => b[1] - a[1])
+      .slice(0, n)
+      .map(([name]) => name)
+  );
+}
+
+/**
  * Build a Dirichlet posterior over the accord space from picks and votes.
  * Returns the posterior mean as a preference vector.
+ *
+ * Vote influence is weighted by accord rank:
+ * - A single vote mostly affects trailing accords (3rd, 4th, 5th…) since the
+ *   leading accords are *why* the perfume was recommended in the first place.
+ * - Leading accords (top 2) only get significant adjustment when multiple
+ *   votes of the same direction converge on them — i.e., the user has shown
+ *   a clear pattern, not just one data point.
  */
 function buildDirichletPosterior(
   seeds: Perfume[],
@@ -116,17 +135,49 @@ function buildDirichletPosterior(
     }
   }
 
-  // Update with votes
+  // ── Count how many votes of each direction share a leading accord ──
+  // If 2+ upvotes share "woody" in their top-2, that's a real signal.
+  // If only 1 downvote has "woody" in top-2, the user probably still likes
+  // woody — they just didn't like *that specific* woody perfume's trailing notes.
+  const leadingAccordVoteCounts: Record<string, { up: number; down: number }> = {};
   for (const vote of votes) {
     const perfume = catalog[vote.perfumeId];
     if (!perfume) continue;
-    if (vote.vote === "up") {
-      for (const [accord, weight] of Object.entries(perfume.aw)) {
-        alpha[accord] += weight / 20; // half the influence of a direct pick
+    const top2 = getTopAccords(perfume, 2);
+    for (const accord of top2) {
+      if (!leadingAccordVoteCounts[accord]) {
+        leadingAccordVoteCounts[accord] = { up: 0, down: 0 };
       }
-    } else {
-      for (const [accord, weight] of Object.entries(perfume.aw)) {
-        alpha[accord] = Math.max(0.1, alpha[accord] - weight / 20);
+      leadingAccordVoteCounts[accord][vote.vote]++;
+    }
+  }
+
+  // ── Apply votes with position-aware weighting ──
+  for (const vote of votes) {
+    const perfume = catalog[vote.perfumeId];
+    if (!perfume) continue;
+    const top2 = getTopAccords(perfume, 2);
+
+    for (const [accord, weight] of Object.entries(perfume.aw)) {
+      const isLeading = top2.has(accord);
+
+      // Determine the multiplier for this accord based on rank position
+      let multiplier: number;
+      if (isLeading) {
+        // Leading accord: only apply full weight if multiple votes converge
+        const directionCount = leadingAccordVoteCounts[accord]?.[vote.vote] ?? 0;
+        // 1 vote → 0.1x, 2 votes → 0.6x, 3+ votes → 1.0x
+        multiplier = directionCount >= 3 ? 1.0 : directionCount >= 2 ? 0.6 : 0.1;
+      } else {
+        // Trailing accord: full influence — this is the differentiating signal
+        multiplier = 1.0;
+      }
+
+      const delta = (weight / 20) * multiplier;
+      if (vote.vote === "up") {
+        alpha[accord] += delta;
+      } else {
+        alpha[accord] = Math.max(0.1, alpha[accord] - delta);
       }
     }
   }
@@ -158,34 +209,33 @@ export function generateRecommendations(
   const grouped: Record<number, [number, number][]> = {};
 
   if (votes.length > 0) {
-    // Refined mode: Dirichlet posterior preference vector
+    // Refined mode: keep per-seed grouping but re-rank using Dirichlet posterior
     const posterior = buildDirichletPosterior(seeds, votes, catalog);
 
-    // Get candidates from top accords of the posterior
-    const topAccords = Object.entries(posterior)
-      .sort((a, b) => b[1] - a[1])
-      .slice(0, 6)
-      .map(([name]) => name);
-
-    const candidates = new Set<number>();
-    for (const accord of topAccords) {
-      const ids = lookup[accord];
-      if (ids) {
-        for (const id of ids) candidates.add(id);
+    // Blend each seed's accords with the posterior for per-seed re-ranking
+    for (const seed of seeds) {
+      // Create a blended vector: 50% seed accords + 50% posterior
+      const blended: Record<string, number> = {};
+      const allKeys = new Set([...Object.keys(seed.aw), ...Object.keys(posterior)]);
+      for (const k of allKeys) {
+        blended[k] = ((seed.aw[k] ?? 0) + (posterior[k] ?? 0)) / 2;
       }
-    }
 
-    const results: [number, number][] = [];
-    for (const candidateId of candidates) {
-      if (seedIds.has(candidateId)) continue;
-      if (candidateId >= catalog.length) continue;
-      const sim = cosineSimilarity(posterior, catalog[candidateId].aw);
-      results.push([candidateId, sim]);
-    }
+      // Get candidates from the seed's top accords (same as unrefined mode)
+      const candidates = getCandidates(seed, lookup);
+      const results: [number, number][] = [];
 
-    results.sort((a, b) => b[1] - a[1]);
-    // -999999 key signals "refined" recommendations (avoid collision with scraped perfume IDs)
-    grouped[-999999] = results.slice(0, recsPerSeed * seeds.length);
+      for (const candidateId of candidates) {
+        if (allRecIds.has(candidateId)) continue;
+        if (candidateId >= catalog.length) continue;
+        const sim = cosineSimilarity(blended, catalog[candidateId].aw);
+        results.push([candidateId, sim]);
+      }
+
+      results.sort((a, b) => b[1] - a[1]);
+      grouped[seed.id] = results.slice(0, recsPerSeed);
+      for (const [id] of grouped[seed.id]) allRecIds.add(id);
+    }
   } else {
     // Standard mode: per-seed recommendations
     for (const seed of seeds) {
