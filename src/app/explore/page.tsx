@@ -8,6 +8,7 @@ import { useApp } from "@/lib/context";
 import { ACCORD_FAMILIES } from "@/lib/accords";
 import { AccordPill } from "@/components/AccordPill";
 import { PerfumeCard } from "@/components/PerfumeCard";
+import { getPerfume } from "@/lib/perfume-lookup";
 import type { Perfume } from "@/lib/types";
 
 export default function ExplorePage() {
@@ -272,7 +273,7 @@ export default function ExplorePage() {
           </div>
           <div className="grid gap-2">
             {state.picks.map((pick) => {
-              const p = catalog[pick.perfumeId];
+              const p = getPerfume(pick.perfumeId, catalog, state.scrapedPerfumes);
               if (!p) return null;
               return (
                 <PerfumeCard

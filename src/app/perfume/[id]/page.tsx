@@ -7,6 +7,7 @@ import { useApp } from "@/lib/context";
 import { AccordPill } from "@/components/AccordPill";
 import { PerfumeCard } from "@/components/PerfumeCard";
 import { GENDER_SYMBOL } from "@/lib/accords";
+import { getPerfume } from "@/lib/perfume-lookup";
 import type { Perfume } from "@/lib/types";
 
 export default function PerfumeDetailPage({
@@ -24,7 +25,7 @@ export default function PerfumeDetailPage({
   const [userRating, setUserRating] = useState<number | null>(null);
 
   const perfumeId = parseInt(id, 10);
-  const perfume = catalog[perfumeId] ?? null;
+  const perfume = getPerfume(perfumeId, catalog, state.scrapedPerfumes) ?? null;
   const isPicked = state.picks.some((p) => p.perfumeId === perfumeId);
 
   useEffect(() => {
@@ -49,7 +50,7 @@ export default function PerfumeDetailPage({
     if (!perfume || !catalog.length) return;
     const exclude = new Set([perfumeId]);
     const recs = recommendForSeed(perfume, catalog, lookup, exclude, 5);
-    setSimilar(recs.map(([recId]) => catalog[recId]));
+    setSimilar(recs.map(([recId]) => getPerfume(recId, catalog, state.scrapedPerfumes)).filter(Boolean) as Perfume[]);
   }, [perfume, catalog, lookup, perfumeId]);
 
   function saveNote() {

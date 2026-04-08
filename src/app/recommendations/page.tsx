@@ -6,6 +6,7 @@ import { loadCatalog, loadLookup } from "@/lib/data";
 import { generateRecommendations } from "@/lib/similarity";
 import { useApp } from "@/lib/context";
 import { PerfumeCard } from "@/components/PerfumeCard";
+import { getPerfume } from "@/lib/perfume-lookup";
 import type { Perfume } from "@/lib/types";
 
 export default function RecommendationsPage() {
@@ -27,8 +28,8 @@ export default function RecommendationsPage() {
   const generate = useCallback(() => {
     if (state.picks.length === 0 || catalog.length === 0) return;
     const seeds = state.picks
-      .map((p) => catalog[p.perfumeId])
-      .filter(Boolean);
+      .map((p) => getPerfume(p.perfumeId, catalog, state.scrapedPerfumes))
+      .filter((p): p is Perfume => !!p);
     const result = generateRecommendations(seeds, catalog, lookup, state.votes);
     setRecs(result);
     setGenerated(true);
@@ -108,7 +109,7 @@ export default function RecommendationsPage() {
         const seedName =
           seedId === -1
             ? "Your Refined Taste"
-            : catalog[seedId]?.n ?? "Unknown";
+            : getPerfume(seedId, catalog, state.scrapedPerfumes)?.n ?? "Unknown";
 
         return (
           <div key={seedId} className="mb-8">
@@ -121,7 +122,7 @@ export default function RecommendationsPage() {
             </h2>
             <div className="grid gap-3">
               {recList.map(([recId, sim]) => {
-                const p = catalog[recId];
+                const p = getPerfume(recId, catalog, state.scrapedPerfumes);
                 if (!p) return null;
                 const existingVote = state.votes.find((v) => v.perfumeId === recId);
                 return (
