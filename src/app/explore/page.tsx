@@ -178,7 +178,7 @@ export default function ExplorePage() {
 
   if (loading) {
     return (
-      <div className="max-w-4xl mx-auto px-4 py-16 text-center text-stone-500">
+      <div className="max-w-4xl mx-auto px-4 py-16 text-center text-violet-500">
         Loading 68,000 perfumes...
       </div>
     );
@@ -188,14 +188,14 @@ export default function ExplorePage() {
 
   return (
     <div className="max-w-4xl mx-auto px-4 py-8">
-      <h1 className="font-serif text-3xl font-medium text-stone-900 mb-6">Explore</h1>
+      <h1 className="font-sans font-bold text-3xl font-medium text-violet-900 mb-6">Explore</h1>
 
       {/* Mode tabs */}
-      <div className="flex gap-1 mb-6 bg-stone-100 rounded-lg p-1 w-fit">
+      <div className="flex gap-1 mb-6 bg-violet-100 rounded-lg p-1 w-fit">
         <button
           onClick={() => setMode("search")}
           className={`px-4 py-1.5 rounded-md text-sm transition-colors ${
-            mode === "search" ? "bg-white text-stone-900 shadow-sm" : "text-stone-500 hover:text-stone-700"
+            mode === "search" ? "bg-white text-violet-900 shadow-sm" : "text-violet-500 hover:text-violet-700"
           }`}
         >
           Search
@@ -203,7 +203,7 @@ export default function ExplorePage() {
         <button
           onClick={() => setMode("filter")}
           className={`px-4 py-1.5 rounded-md text-sm transition-colors ${
-            mode === "filter" ? "bg-white text-stone-900 shadow-sm" : "text-stone-500 hover:text-stone-700"
+            mode === "filter" ? "bg-white text-violet-900 shadow-sm" : "text-violet-500 hover:text-violet-700"
           }`}
         >
           Filter by Accords
@@ -218,7 +218,7 @@ export default function ExplorePage() {
             value={query}
             onChange={(e) => setQuery(e.target.value)}
             placeholder="Search perfumes... e.g. Black Orchid, Sauvage, Flowerbomb"
-            className="w-full px-4 py-3 bg-white border border-stone-200 rounded-lg text-stone-900 placeholder:text-stone-400 focus:outline-none focus:border-stone-400 focus:ring-1 focus:ring-stone-400"
+            className="w-full px-4 py-3 bg-white border border-violet-200 rounded-lg text-violet-900 placeholder:text-violet-400 focus:outline-none focus:border-violet-400 focus:ring-1 focus:ring-violet-400"
           />
         </div>
       )}
@@ -226,12 +226,12 @@ export default function ExplorePage() {
       {/* Filter mode */}
       {mode === "filter" && (
         <div className="mb-6 space-y-4">
-          <p className="text-sm text-stone-500">
+          <p className="text-sm text-violet-500">
             Select accords you want. We&apos;ll show perfumes that match all of them.
           </p>
           {Object.entries(ACCORD_FAMILIES).map(([family, accords]) => (
             <div key={family}>
-              <h3 className="text-xs font-medium text-stone-400 uppercase tracking-wider mb-2">
+              <h3 className="text-xs font-medium text-violet-400 uppercase tracking-wider mb-2">
                 {family}
               </h3>
               <div className="flex flex-wrap gap-1.5">
@@ -249,7 +249,7 @@ export default function ExplorePage() {
           {selectedAccords.length > 0 && (
             <button
               onClick={() => setSelectedAccords([])}
-              className="text-xs text-stone-400 hover:text-stone-600 transition-colors"
+              className="text-xs text-violet-400 hover:text-violet-600 transition-colors"
             >
               Clear all filters
             </button>
@@ -259,14 +259,14 @@ export default function ExplorePage() {
 
       {/* Your Picks */}
       {state.picks.length > 0 && (
-        <div className="mb-6 p-4 bg-white border border-stone-200 rounded-lg">
+        <div className="mb-6 p-4 bg-white border border-violet-200 rounded-lg">
           <div className="flex items-center justify-between mb-3">
-            <h2 className="font-serif text-lg font-medium text-stone-900">
+            <h2 className="font-sans font-bold text-lg font-medium text-violet-900">
               Your Picks ({state.picks.length}/3)
             </h2>
             <button
               onClick={() => router.push("/recommendations")}
-              className="px-4 py-2 rounded-lg bg-stone-900 text-white text-sm font-medium hover:bg-stone-700 transition-colors"
+              className="px-4 py-2 rounded-lg bg-violet-900 text-white text-sm font-medium hover:bg-violet-700 transition-colors"
             >
               Get Recommendations
             </button>
@@ -282,7 +282,7 @@ export default function ExplorePage() {
                   action={
                     <button
                       onClick={() => removeFromPicks(p.id)}
-                      className="text-xs px-3 py-1.5 rounded-md border border-stone-300 text-stone-500 hover:bg-stone-100 transition-colors"
+                      className="text-xs px-3 py-1.5 rounded-md border border-violet-300 text-violet-500 hover:bg-violet-100 transition-colors"
                     >
                       Remove
                     </button>
@@ -297,7 +297,7 @@ export default function ExplorePage() {
       {/* Results */}
       {displayResults.length > 0 && (
         <div>
-          <h2 className="font-serif text-lg font-medium text-stone-900 mb-3">
+          <h2 className="font-sans font-bold text-lg font-medium text-violet-900 mb-3">
             {mode === "search" ? "Search Results" : `Matching Perfumes (${filterResults.length})`}
           </h2>
           <div className="grid gap-3">
@@ -309,14 +309,14 @@ export default function ExplorePage() {
                   isPicked(p.id) ? (
                     <button
                       onClick={() => removeFromPicks(p.id)}
-                      className="text-xs px-3 py-1.5 rounded-md border border-stone-300 text-stone-500 hover:bg-stone-100 transition-colors"
+                      className="text-xs px-3 py-1.5 rounded-md border border-violet-300 text-violet-500 hover:bg-violet-100 transition-colors"
                     >
                       Remove
                     </button>
                   ) : state.picks.length < 3 ? (
                     <button
                       onClick={() => addToPicks(p.id)}
-                      className="text-xs px-3 py-1.5 rounded-md bg-stone-900 text-white hover:bg-stone-700 transition-colors"
+                      className="text-xs px-3 py-1.5 rounded-md bg-violet-900 text-white hover:bg-violet-700 transition-colors"
                     >
                       + Pick
                     </button>
@@ -332,17 +332,17 @@ export default function ExplorePage() {
       {mode === "search" && query && (
         <div className="mt-6">
           {searchResults.length === 0 && (
-            <p className="text-center text-stone-500 mb-4">
+            <p className="text-center text-violet-500 mb-4">
               No perfumes found for &ldquo;{query}&rdquo; in our catalog.
             </p>
           )}
-          <div className="bg-white border border-stone-200 rounded-lg p-5">
+          <div className="bg-white border border-violet-200 rounded-lg p-5">
             <div className="flex items-center justify-between mb-3">
               <div>
-                <h3 className="font-serif text-lg font-medium text-stone-900">
+                <h3 className="font-sans font-bold text-lg font-medium text-violet-900">
                   Search Fragrantica
                 </h3>
-                <p className="text-sm text-stone-500">
+                <p className="text-sm text-violet-500">
                   {searchResults.length > 0
                     ? "Can\u2019t find what you\u2019re looking for? Search Fragrantica\u2019s full catalog."
                     : "We\u2019ll search Fragrantica and import the perfume for you."}
@@ -351,7 +351,7 @@ export default function ExplorePage() {
               <button
                 onClick={searchFragrantica}
                 disabled={searchingFragrantica}
-                className="flex-shrink-0 px-4 py-2 rounded-md bg-stone-900 text-white text-sm hover:bg-stone-700 transition-colors disabled:opacity-50"
+                className="flex-shrink-0 px-4 py-2 rounded-md bg-violet-900 text-white text-sm hover:bg-violet-700 transition-colors disabled:opacity-50"
               >
                 {searchingFragrantica ? "Searching..." : "Search Fragrantica"}
               </button>
@@ -359,39 +359,39 @@ export default function ExplorePage() {
 
             {/* Loading state for Fragrantica search */}
             {searchingFragrantica && (
-              <div className="flex items-center gap-3 mt-3 border-t border-stone-100 pt-4 pb-2">
-                <svg className="animate-spin h-5 w-5 text-stone-400" viewBox="0 0 24 24" fill="none">
+              <div className="flex items-center gap-3 mt-3 border-t border-violet-100 pt-4 pb-2">
+                <svg className="animate-spin h-5 w-5 text-violet-400" viewBox="0 0 24 24" fill="none">
                   <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4" />
                   <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z" />
                 </svg>
-                <span className="text-sm text-stone-500">Hang tight while we search Fragrantica...</span>
+                <span className="text-sm text-violet-500">Hang tight while we search Fragrantica...</span>
               </div>
             )}
 
             {/* Loading state for perfume scrape */}
             {scraping && (
-              <div className="flex items-center gap-3 mt-3 border-t border-stone-100 pt-4 pb-2">
-                <svg className="animate-spin h-5 w-5 text-stone-400" viewBox="0 0 24 24" fill="none">
+              <div className="flex items-center gap-3 mt-3 border-t border-violet-100 pt-4 pb-2">
+                <svg className="animate-spin h-5 w-5 text-violet-400" viewBox="0 0 24 24" fill="none">
                   <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4" />
                   <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z" />
                 </svg>
-                <span className="text-sm text-stone-500">Hang tight while we scrape Fragrantica...</span>
+                <span className="text-sm text-violet-500">Hang tight while we scrape Fragrantica...</span>
               </div>
             )}
 
             {/* Fragrantica search results */}
             {!searchingFragrantica && fragranticaResults.length > 0 && (
-              <div className="space-y-2 mt-3 border-t border-stone-100 pt-3">
-                <p className="text-xs text-stone-400">Select a perfume to import:</p>
+              <div className="space-y-2 mt-3 border-t border-violet-100 pt-3">
+                <p className="text-xs text-violet-400">Select a perfume to import:</p>
                 {fragranticaResults.map((r, i) => (
                   <button
                     key={i}
                     onClick={() => handleScrape(r.url)}
                     disabled={scraping}
-                    className="w-full text-left px-3 py-2.5 bg-stone-50 border border-stone-200 rounded-md hover:border-stone-400 transition-colors disabled:opacity-50"
+                    className="w-full text-left px-3 py-2.5 bg-violet-50 border border-violet-200 rounded-md hover:border-violet-400 transition-colors disabled:opacity-50"
                   >
-                    <span className="text-sm font-medium text-stone-900">{r.name}</span>
-                    <span className="text-xs text-stone-400 ml-2">{r.brand}</span>
+                    <span className="text-sm font-medium text-violet-900">{r.name}</span>
+                    <span className="text-xs text-violet-400 ml-2">{r.brand}</span>
                   </button>
                 ))}
               </div>
@@ -399,20 +399,20 @@ export default function ExplorePage() {
 
             {/* Or paste URL directly */}
             {fragranticaResults.length === 0 && !searchingFragrantica && !scraping && (
-              <div className="mt-3 border-t border-stone-100 pt-3">
-                <p className="text-xs text-stone-400 mb-2">Or paste a Fragrantica URL directly:</p>
+              <div className="mt-3 border-t border-violet-100 pt-3">
+                <p className="text-xs text-violet-400 mb-2">Or paste a Fragrantica URL directly:</p>
                 <div className="flex gap-2">
                   <input
                     type="text"
                     value={scrapeUrl}
                     onChange={(e) => setScrapeUrl(e.target.value)}
                     placeholder="https://www.fragrantica.com/perfume/..."
-                    className="flex-1 px-3 py-2 bg-stone-50 border border-stone-200 rounded-md text-sm text-stone-900 placeholder:text-stone-400 focus:outline-none focus:border-stone-400"
+                    className="flex-1 px-3 py-2 bg-violet-50 border border-violet-200 rounded-md text-sm text-violet-900 placeholder:text-violet-400 focus:outline-none focus:border-violet-400"
                   />
                   <button
                     onClick={() => handleScrape()}
                     disabled={scraping}
-                    className="px-4 py-2 rounded-md bg-stone-900 text-white text-sm hover:bg-stone-700 transition-colors disabled:opacity-50"
+                    className="px-4 py-2 rounded-md bg-violet-900 text-white text-sm hover:bg-violet-700 transition-colors disabled:opacity-50"
                   >
                     {scraping ? "Fetching..." : "Import"}
                   </button>
@@ -426,19 +426,19 @@ export default function ExplorePage() {
 
             {/* Scraped perfume confirmation */}
             {scrapeResult && (
-              <div className="mt-4 space-y-3 border-t border-stone-100 pt-3">
-                <p className="text-sm text-stone-500">Found this perfume — does it look right?</p>
+              <div className="mt-4 space-y-3 border-t border-violet-100 pt-3">
+                <p className="text-sm text-violet-500">Found this perfume — does it look right?</p>
                 <PerfumeCard perfume={scrapeResult} />
                 <div className="flex gap-2">
                   <button
                     onClick={confirmScrapedPerfume}
-                    className="px-4 py-2 rounded-md bg-stone-900 text-white text-sm hover:bg-stone-700 transition-colors"
+                    className="px-4 py-2 rounded-md bg-violet-900 text-white text-sm hover:bg-violet-700 transition-colors"
                   >
                     Add to Picks
                   </button>
                   <button
                     onClick={() => setScrapeResult(null)}
-                    className="px-4 py-2 rounded-md border border-stone-300 text-stone-500 text-sm hover:bg-stone-100 transition-colors"
+                    className="px-4 py-2 rounded-md border border-violet-300 text-violet-500 text-sm hover:bg-violet-100 transition-colors"
                   >
                     Cancel
                   </button>
@@ -449,16 +449,16 @@ export default function ExplorePage() {
         </div>
       )}
       {mode === "filter" && selectedAccords.length > 0 && filterResults.length === 0 && (
-        <div className="text-center py-12 text-stone-500">
+        <div className="text-center py-12 text-violet-500">
           No perfumes match all selected accords. Try removing some filters.
         </div>
       )}
 
       {/* Cross-link to Build */}
       <div className="mt-8 text-center">
-        <p className="text-sm text-stone-400">
+        <p className="text-sm text-violet-400">
           Know what you want it to smell like?{" "}
-          <a href="/build" className="text-stone-600 underline underline-offset-2 hover:text-stone-900 transition-colors">
+          <a href="/build" className="text-violet-600 underline underline-offset-2 hover:text-violet-900 transition-colors">
             Build your ideal scent profile
           </a>
         </p>

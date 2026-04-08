@@ -45,8 +45,8 @@ A multi-page Next.js + Tailwind app that recommends perfumes based on accord-bas
 
 ## Design
 
-- **Fonts**: EB Garamond (serif headings), Source Sans 3 (body)
-- **Colors**: Warm cream background (#f7f5f0), white cards, stone borders
+- **Fonts**: Plus Jakarta Sans (all text — bold for headings, regular for body)
+- **Colors**: Pastel violet/lavender background (#f5f2ff), white cards, violet borders (Tailwind `violet` palette)
 - **Accord pills**: Color-coded by accord family (teal=fresh, mauve=floral, brown=woody, etc.) — ported from the original Streamlit app
 - **Layout**: Shared nav with picks badge, responsive, max-w-4xl centered content
 
@@ -61,7 +61,8 @@ npm run build    # production build
 ## Style Preferences
 
 - Clean, minimal, professional — Linear/Notion-inspired
-- Serif for headings, sans for body
+- Bold sans-serif (Plus Jakarta Sans) for headings, regular weight for body
+- Pastel violet/purple theme throughout
 - Subtle interactions (hover states, transitions)
 - No emojis in UI unless specifically requested
 - Mobile-responsive with sensible breakpoints

@@ -154,7 +154,7 @@ export default function BuildPage() {
 
   if (loading) {
     return (
-      <div className="max-w-4xl mx-auto px-4 py-16 text-center text-stone-500">
+      <div className="max-w-4xl mx-auto px-4 py-16 text-center text-violet-500">
         Loading...
       </div>
     );
@@ -164,10 +164,10 @@ export default function BuildPage() {
     <div className="max-w-4xl mx-auto px-4 py-8">
       {/* Header */}
       <div className="mb-8">
-        <h1 className="font-serif text-3xl font-medium text-stone-900 mb-2">
+        <h1 className="font-sans font-bold text-3xl font-medium text-violet-900 mb-2">
           Build Your Scent
         </h1>
-        <p className="text-stone-500">
+        <p className="text-violet-500">
           Describe the perfume you&apos;re looking for and we&apos;ll find it in our catalog of 68,000 fragrances.
         </p>
       </div>
@@ -179,18 +179,18 @@ export default function BuildPage() {
             <div
               className={`w-8 h-8 rounded-full flex items-center justify-center text-sm font-medium transition-colors ${
                 step >= s
-                  ? "bg-stone-900 text-white"
-                  : "bg-stone-100 text-stone-400"
+                  ? "bg-violet-900 text-white"
+                  : "bg-violet-100 text-violet-400"
               }`}
             >
               {s}
             </div>
             {s < 3 && (
-              <div className={`w-12 h-0.5 rounded-full transition-colors ${step > s ? "bg-stone-900" : "bg-stone-200"}`} />
+              <div className={`w-12 h-0.5 rounded-full transition-colors ${step > s ? "bg-violet-900" : "bg-violet-200"}`} />
             )}
           </div>
         ))}
-        <span className="ml-3 text-sm text-stone-400">
+        <span className="ml-3 text-sm text-violet-400">
           {step === 1 && "Pick leading accords"}
           {step === 2 && "Add trailing accords"}
           {step === 3 && "Results"}
@@ -200,17 +200,17 @@ export default function BuildPage() {
       {/* Step 1: Leading accords */}
       {step === 1 && (
         <div>
-          <div className="bg-white border border-stone-200 rounded-lg p-6 mb-6">
-            <h2 className="font-serif text-xl font-medium text-stone-900 mb-1">
+          <div className="bg-white border border-violet-200 rounded-lg p-6 mb-6">
+            <h2 className="font-sans font-bold text-xl font-medium text-violet-900 mb-1">
               What should it smell like?
             </h2>
-            <p className="text-sm text-stone-500 mb-5">
+            <p className="text-sm text-violet-500 mb-5">
               Pick 1&ndash;3 leading accords &mdash; the dominant scent character you want.
             </p>
 
             {leadingAccords.length > 0 && (
-              <div className="flex flex-wrap gap-2 mb-5 pb-4 border-b border-stone-100">
-                <span className="text-xs text-stone-400 self-center mr-1">Selected:</span>
+              <div className="flex flex-wrap gap-2 mb-5 pb-4 border-b border-violet-100">
+                <span className="text-xs text-violet-400 self-center mr-1">Selected:</span>
                 {leadingAccords.map((accord) => (
                   <AccordPill
                     key={accord}
@@ -226,7 +226,7 @@ export default function BuildPage() {
             <div className="space-y-4">
               {Object.entries(ACCORD_FAMILIES).map(([family, accords]) => (
                 <div key={family}>
-                  <h3 className="text-xs font-medium text-stone-400 uppercase tracking-wider mb-2">
+                  <h3 className="text-xs font-medium text-violet-400 uppercase tracking-wider mb-2">
                     {family}
                   </h3>
                   <div className="flex flex-wrap gap-1.5">
@@ -248,14 +248,14 @@ export default function BuildPage() {
             <button
               onClick={() => setStep(2)}
               disabled={leadingAccords.length === 0}
-              className="px-5 py-2.5 rounded-lg bg-stone-900 text-white text-sm font-medium hover:bg-stone-700 transition-colors disabled:opacity-40 disabled:cursor-not-allowed"
+              className="px-5 py-2.5 rounded-lg bg-violet-900 text-white text-sm font-medium hover:bg-violet-700 transition-colors disabled:opacity-40 disabled:cursor-not-allowed"
             >
               Next: Trailing Accords
             </button>
             {leadingAccords.length >= 1 && (
               <button
                 onClick={findMatches}
-                className="px-5 py-2.5 rounded-lg border border-stone-300 text-stone-600 text-sm hover:bg-stone-100 transition-colors"
+                className="px-5 py-2.5 rounded-lg border border-violet-300 text-violet-600 text-sm hover:bg-violet-100 transition-colors"
               >
                 Skip &amp; Find Matches
               </button>
@@ -267,9 +267,9 @@ export default function BuildPage() {
       {/* Step 2: Trailing accords */}
       {step === 2 && (
         <div>
-          <div className="bg-white border border-stone-200 rounded-lg p-6 mb-4">
-            <div className="mb-4 pb-4 border-b border-stone-100">
-              <span className="text-xs font-medium text-stone-400 uppercase tracking-wider">Leading accords</span>
+          <div className="bg-white border border-violet-200 rounded-lg p-6 mb-4">
+            <div className="mb-4 pb-4 border-b border-violet-100">
+              <span className="text-xs font-medium text-violet-400 uppercase tracking-wider">Leading accords</span>
               <div className="flex flex-wrap gap-2 mt-2">
                 {leadingAccords.map((accord) => (
                   <AccordPill key={accord} accord={accord} large selected />
@@ -277,17 +277,17 @@ export default function BuildPage() {
               </div>
             </div>
 
-            <h2 className="font-serif text-xl font-medium text-stone-900 mb-1">
+            <h2 className="font-sans font-bold text-xl font-medium text-violet-900 mb-1">
               What else should it have?
             </h2>
-            <p className="text-sm text-stone-500 mb-5">
+            <p className="text-sm text-violet-500 mb-5">
               Optionally pick trailing accords &mdash; secondary notes that add character.
               These won&apos;t be required, but perfumes with them will rank higher.
             </p>
 
             {trailingAccords.length > 0 && (
-              <div className="flex flex-wrap gap-2 mb-5 pb-4 border-b border-stone-100">
-                <span className="text-xs text-stone-400 self-center mr-1">Selected:</span>
+              <div className="flex flex-wrap gap-2 mb-5 pb-4 border-b border-violet-100">
+                <span className="text-xs text-violet-400 self-center mr-1">Selected:</span>
                 {trailingAccords.map((accord) => (
                   <AccordPill
                     key={accord}
@@ -307,7 +307,7 @@ export default function BuildPage() {
                 if (available.length === 0) return null;
                 return (
                   <div key={family}>
-                    <h3 className="text-xs font-medium text-stone-400 uppercase tracking-wider mb-2">
+                    <h3 className="text-xs font-medium text-violet-400 uppercase tracking-wider mb-2">
                       {family}
                     </h3>
                     <div className="flex flex-wrap gap-1.5">
@@ -329,13 +329,13 @@ export default function BuildPage() {
           <div className="flex gap-3">
             <button
               onClick={findMatches}
-              className="px-5 py-2.5 rounded-lg bg-stone-900 text-white text-sm font-medium hover:bg-stone-700 transition-colors"
+              className="px-5 py-2.5 rounded-lg bg-violet-900 text-white text-sm font-medium hover:bg-violet-700 transition-colors"
             >
               Find Matches
             </button>
             <button
               onClick={goBack}
-              className="px-5 py-2.5 rounded-lg border border-stone-300 text-stone-600 text-sm hover:bg-stone-100 transition-colors"
+              className="px-5 py-2.5 rounded-lg border border-violet-300 text-violet-600 text-sm hover:bg-violet-100 transition-colors"
             >
               Back
             </button>
@@ -347,15 +347,15 @@ export default function BuildPage() {
       {step === 3 && (
         <div>
           {/* Profile summary */}
-          <div className="bg-white border border-stone-200 rounded-lg p-5 mb-6">
+          <div className="bg-white border border-violet-200 rounded-lg p-5 mb-6">
             <div className="flex flex-wrap items-center gap-2">
-              <span className="text-sm text-stone-500">Smells like</span>
+              <span className="text-sm text-violet-500">Smells like</span>
               {leadingAccords.map((accord) => (
                 <AccordPill key={accord} accord={accord} large />
               ))}
               {trailingAccords.length > 0 && (
                 <>
-                  <span className="text-sm text-stone-400">with</span>
+                  <span className="text-sm text-violet-400">with</span>
                   {trailingAccords.map((accord) => (
                     <AccordPill key={accord} accord={accord} />
                   ))}
@@ -363,7 +363,7 @@ export default function BuildPage() {
               )}
               <button
                 onClick={() => setStep(1)}
-                className="ml-auto text-xs text-stone-400 hover:text-stone-600 transition-colors"
+                className="ml-auto text-xs text-violet-400 hover:text-violet-600 transition-colors"
               >
                 Edit
               </button>
@@ -372,14 +372,14 @@ export default function BuildPage() {
 
           {/* Picks */}
           {state.picks.length > 0 && (
-            <div className="mb-6 p-4 bg-white border border-stone-200 rounded-lg">
+            <div className="mb-6 p-4 bg-white border border-violet-200 rounded-lg">
               <div className="flex items-center justify-between mb-3">
-                <h2 className="font-serif text-lg font-medium text-stone-900">
+                <h2 className="font-sans font-bold text-lg font-medium text-violet-900">
                   Your Picks ({state.picks.length}/3)
                 </h2>
                 <button
                   onClick={() => router.push("/recommendations")}
-                  className="px-4 py-2 rounded-lg bg-stone-900 text-white text-sm font-medium hover:bg-stone-700 transition-colors"
+                  className="px-4 py-2 rounded-lg bg-violet-900 text-white text-sm font-medium hover:bg-violet-700 transition-colors"
                 >
                   Get Recommendations
                 </button>
@@ -389,7 +389,7 @@ export default function BuildPage() {
 
           {results.length > 0 ? (
             <div>
-              <h2 className="font-serif text-lg font-medium text-stone-900 mb-3">
+              <h2 className="font-sans font-bold text-lg font-medium text-violet-900 mb-3">
                 Matching Perfumes ({results.length})
               </h2>
               <div className="grid gap-3">
@@ -401,14 +401,14 @@ export default function BuildPage() {
                       isPicked(p.id) ? (
                         <button
                           onClick={() => removeFromPicks(p.id)}
-                          className="text-xs px-3 py-1.5 rounded-md border border-stone-300 text-stone-500 hover:bg-stone-100 transition-colors"
+                          className="text-xs px-3 py-1.5 rounded-md border border-violet-300 text-violet-500 hover:bg-violet-100 transition-colors"
                         >
                           Remove
                         </button>
                       ) : state.picks.length < 3 ? (
                         <button
                           onClick={() => addToPicks(p.id)}
-                          className="text-xs px-3 py-1.5 rounded-md bg-stone-900 text-white hover:bg-stone-700 transition-colors"
+                          className="text-xs px-3 py-1.5 rounded-md bg-violet-900 text-white hover:bg-violet-700 transition-colors"
                         >
                           + Pick
                         </button>
@@ -419,7 +419,7 @@ export default function BuildPage() {
               </div>
             </div>
           ) : (
-            <div className="text-center py-12 text-stone-500">
+            <div className="text-center py-12 text-violet-500">
               No perfumes match all your leading accords. Try removing one.
             </div>
           )}
@@ -427,13 +427,13 @@ export default function BuildPage() {
           <div className="flex gap-3 mt-6">
             <button
               onClick={goBack}
-              className="px-5 py-2.5 rounded-lg border border-stone-300 text-stone-600 text-sm hover:bg-stone-100 transition-colors"
+              className="px-5 py-2.5 rounded-lg border border-violet-300 text-violet-600 text-sm hover:bg-violet-100 transition-colors"
             >
               Back
             </button>
             <button
               onClick={() => { setStep(1); setLeadingAccords([]); setTrailingAccords([]); setResults([]); }}
-              className="px-5 py-2.5 rounded-lg border border-stone-300 text-stone-600 text-sm hover:bg-stone-100 transition-colors"
+              className="px-5 py-2.5 rounded-lg border border-violet-300 text-violet-600 text-sm hover:bg-violet-100 transition-colors"
             >
               Start Over
             </button>

@@ -67,7 +67,7 @@ export default function QuizPage() {
 
   if (loading) {
     return (
-      <div className="max-w-2xl mx-auto px-4 py-16 text-center text-stone-500">
+      <div className="max-w-2xl mx-auto px-4 py-16 text-center text-violet-500">
         Loading catalog...
       </div>
     );
@@ -76,8 +76,8 @@ export default function QuizPage() {
   if (showResults) {
     return (
       <div className="max-w-2xl mx-auto px-4 py-12">
-        <h1 className="font-serif text-3xl font-medium text-stone-900 mb-2">Your Scent Profile</h1>
-        <p className="text-stone-500 mb-6">Based on your answers, you gravitate towards these accords:</p>
+        <h1 className="font-sans font-bold text-3xl font-medium text-violet-900 mb-2">Your Scent Profile</h1>
+        <p className="text-violet-500 mb-6">Based on your answers, you gravitate towards these accords:</p>
 
         <div className="flex flex-wrap gap-2 mb-8">
           {topAccords.map((accord) => (
@@ -85,7 +85,7 @@ export default function QuizPage() {
           ))}
         </div>
 
-        <h2 className="font-serif text-xl font-medium text-stone-900 mb-4">
+        <h2 className="font-sans font-bold text-xl font-medium text-violet-900 mb-4">
           Perfumes we think you&apos;ll love
         </h2>
         <div className="grid gap-3 mb-8">
@@ -96,7 +96,7 @@ export default function QuizPage() {
               action={
                 <button
                   onClick={() => addToPicks(p.id)}
-                  className="text-xs px-3 py-1.5 rounded-md bg-stone-900 text-white hover:bg-stone-700 transition-colors"
+                  className="text-xs px-3 py-1.5 rounded-md bg-violet-900 text-white hover:bg-violet-700 transition-colors"
                 >
                   + Pick
                 </button>
@@ -108,19 +108,19 @@ export default function QuizPage() {
         <div className="flex flex-wrap gap-3">
           <button
             onClick={goToRecs}
-            className="px-5 py-2.5 rounded-lg bg-stone-900 text-white text-sm font-medium hover:bg-stone-700 transition-colors"
+            className="px-5 py-2.5 rounded-lg bg-violet-900 text-white text-sm font-medium hover:bg-violet-700 transition-colors"
           >
             Get Recommendations
           </button>
           <button
             onClick={restart}
-            className="px-5 py-2.5 rounded-lg border border-stone-300 text-stone-600 text-sm hover:bg-stone-100 transition-colors"
+            className="px-5 py-2.5 rounded-lg border border-violet-300 text-violet-600 text-sm hover:bg-violet-100 transition-colors"
           >
             Retake Quiz
           </button>
           <a
             href="/build"
-            className="px-5 py-2.5 rounded-lg border border-stone-300 text-stone-600 text-sm hover:bg-stone-100 transition-colors"
+            className="px-5 py-2.5 rounded-lg border border-violet-300 text-violet-600 text-sm hover:bg-violet-100 transition-colors"
           >
             Fine-tune in Scent Builder
           </a>
@@ -135,17 +135,17 @@ export default function QuizPage() {
     <div className="max-w-2xl mx-auto px-4 py-12">
       <div className="mb-8">
         <div className="flex items-center gap-2 mb-4">
-          <span className="text-xs text-stone-400 font-medium">
+          <span className="text-xs text-violet-400 font-medium">
             {currentQ + 1} / {QUIZ_QUESTIONS.length}
           </span>
-          <div className="flex-1 h-1 bg-stone-200 rounded-full overflow-hidden">
+          <div className="flex-1 h-1 bg-violet-200 rounded-full overflow-hidden">
             <div
-              className="h-full bg-stone-900 rounded-full transition-all duration-300"
+              className="h-full bg-violet-900 rounded-full transition-all duration-300"
               style={{ width: `${((currentQ + 1) / QUIZ_QUESTIONS.length) * 100}%` }}
             />
           </div>
         </div>
-        <h1 className="font-serif text-2xl md:text-3xl font-medium text-stone-900">
+        <h1 className="font-sans font-bold text-2xl md:text-3xl font-medium text-violet-900">
           {q.question}
         </h1>
       </div>
@@ -155,10 +155,10 @@ export default function QuizPage() {
           <button
             key={i}
             onClick={() => selectOption(i)}
-            className="text-left bg-white border border-stone-200 rounded-lg p-5 hover:border-stone-400 hover:shadow-sm transition-all"
+            className="text-left bg-white border border-violet-200 rounded-lg p-5 hover:border-violet-400 hover:shadow-sm transition-all"
           >
-            <div className="font-medium text-stone-900">{option.label}</div>
-            <div className="text-sm text-stone-500 mt-0.5">{option.description}</div>
+            <div className="font-medium text-violet-900">{option.label}</div>
+            <div className="text-sm text-violet-500 mt-0.5">{option.description}</div>
           </button>
         ))}
       </div>

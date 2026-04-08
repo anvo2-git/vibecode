@@ -71,10 +71,10 @@ export default function InfoPage() {
   return (
     <div className="max-w-4xl mx-auto px-4 py-8">
       <div className="mb-8">
-        <h1 className="font-serif text-3xl font-medium text-stone-900 mb-2">
+        <h1 className="font-sans font-bold text-3xl font-medium text-violet-900 mb-2">
           Accord Encyclopedia
         </h1>
-        <p className="text-stone-500">
+        <p className="text-violet-500">
           Learn what each accord smells like, the notes that define it, and which other accords it&apos;s commonly paired with.
         </p>
       </div>
@@ -85,8 +85,8 @@ export default function InfoPage() {
           onClick={() => setFamilyFilter(null)}
           className={`px-3 py-1.5 rounded-md text-sm transition-colors ${
             familyFilter === null
-              ? "bg-stone-900 text-white"
-              : "bg-stone-100 text-stone-500 hover:text-stone-700"
+              ? "bg-violet-900 text-white"
+              : "bg-violet-100 text-violet-500 hover:text-violet-700"
           }`}
         >
           All
@@ -97,8 +97,8 @@ export default function InfoPage() {
             onClick={() => setFamilyFilter(familyFilter === f ? null : f)}
             className={`px-3 py-1.5 rounded-md text-sm transition-colors ${
               familyFilter === f
-                ? "bg-stone-900 text-white"
-                : "bg-stone-100 text-stone-500 hover:text-stone-700"
+                ? "bg-violet-900 text-white"
+                : "bg-violet-100 text-violet-500 hover:text-violet-700"
             }`}
           >
             {f}
@@ -116,44 +116,44 @@ export default function InfoPage() {
           return (
             <div
               key={info.name}
-              className="bg-white border border-stone-200 rounded-lg overflow-hidden transition-all"
+              className="bg-white border border-violet-200 rounded-lg overflow-hidden transition-all"
             >
               {/* Header — always visible */}
               <button
                 onClick={() => setExpandedAccord(isExpanded ? null : info.name)}
-                className="w-full text-left px-5 py-4 flex items-center gap-4 hover:bg-stone-50 transition-colors"
+                className="w-full text-left px-5 py-4 flex items-center gap-4 hover:bg-violet-50 transition-colors"
               >
                 <AccordPill accord={info.name} large />
                 <div className="flex-1 min-w-0">
-                  <p className="text-sm text-stone-600 truncate">{info.spikedWith}</p>
+                  <p className="text-sm text-violet-600 truncate">{info.spikedWith}</p>
                 </div>
                 {!loading && (
-                  <span className="text-xs text-stone-400 flex-shrink-0">
+                  <span className="text-xs text-violet-400 flex-shrink-0">
                     {count.toLocaleString()} perfumes
                   </span>
                 )}
-                <span className={`text-stone-400 transition-transform ${isExpanded ? "rotate-180" : ""}`}>
+                <span className={`text-violet-400 transition-transform ${isExpanded ? "rotate-180" : ""}`}>
                   &#9660;
                 </span>
               </button>
 
               {/* Expanded content */}
               {isExpanded && (
-                <div className="px-5 pb-5 border-t border-stone-100 pt-4 space-y-4">
-                  <p className="text-sm text-stone-700 leading-relaxed">
+                <div className="px-5 pb-5 border-t border-violet-100 pt-4 space-y-4">
+                  <p className="text-sm text-violet-700 leading-relaxed">
                     {info.description}
                   </p>
 
                   {/* Common notes */}
                   <div>
-                    <h3 className="text-xs font-medium text-stone-400 uppercase tracking-wider mb-2">
+                    <h3 className="text-xs font-medium text-violet-400 uppercase tracking-wider mb-2">
                       Common Notes
                     </h3>
                     <div className="flex flex-wrap gap-2">
                       {info.commonNotes.map((note) => (
                         <span
                           key={note}
-                          className="px-2.5 py-1 rounded-full bg-stone-100 text-stone-600 text-xs"
+                          className="px-2.5 py-1 rounded-full bg-violet-100 text-violet-600 text-xs"
                         >
                           {note}
                         </span>
@@ -164,20 +164,20 @@ export default function InfoPage() {
                   {/* Co-occurring accords */}
                   {coAccords.length > 0 && (
                     <div>
-                      <h3 className="text-xs font-medium text-stone-400 uppercase tracking-wider mb-2">
+                      <h3 className="text-xs font-medium text-violet-400 uppercase tracking-wider mb-2">
                         Commonly Found With
                       </h3>
                       <div className="space-y-1.5">
                         {coAccords.map(({ accord, pct }) => (
                           <div key={accord} className="flex items-center gap-3">
                             <AccordPill accord={accord} />
-                            <div className="flex-1 h-1.5 bg-stone-100 rounded-full overflow-hidden">
+                            <div className="flex-1 h-1.5 bg-violet-100 rounded-full overflow-hidden">
                               <div
-                                className="h-full bg-stone-300 rounded-full"
+                                className="h-full bg-violet-300 rounded-full"
                                 style={{ width: `${pct}%` }}
                               />
                             </div>
-                            <span className="text-xs text-stone-400 w-10 text-right">{pct}%</span>
+                            <span className="text-xs text-violet-400 w-10 text-right">{pct}%</span>
                           </div>
                         ))}
                       </div>

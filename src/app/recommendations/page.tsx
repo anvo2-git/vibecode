@@ -57,7 +57,7 @@ export default function RecommendationsPage() {
 
   if (loading) {
     return (
-      <div className="max-w-4xl mx-auto px-4 py-16 text-center text-stone-500">
+      <div className="max-w-4xl mx-auto px-4 py-16 text-center text-violet-500">
         Loading...
       </div>
     );
@@ -67,20 +67,20 @@ export default function RecommendationsPage() {
   if (state.picks.length === 0) {
     return (
       <div className="max-w-4xl mx-auto px-4 py-16 text-center">
-        <h1 className="font-serif text-3xl font-medium text-stone-900 mb-3">Recommendations</h1>
-        <p className="text-stone-500 mb-6">
+        <h1 className="font-sans font-bold text-3xl font-medium text-violet-900 mb-3">Recommendations</h1>
+        <p className="text-violet-500 mb-6">
           You haven&apos;t picked any perfumes yet. Add up to 3 to get personalised recommendations.
         </p>
         <div className="flex gap-3 justify-center">
           <Link
             href="/explore"
-            className="px-5 py-2.5 rounded-lg bg-stone-900 text-white text-sm font-medium hover:bg-stone-700 transition-colors"
+            className="px-5 py-2.5 rounded-lg bg-violet-900 text-white text-sm font-medium hover:bg-violet-700 transition-colors"
           >
             Explore Perfumes
           </Link>
           <Link
             href="/quiz"
-            className="px-5 py-2.5 rounded-lg border border-stone-300 text-stone-600 text-sm hover:bg-stone-100 transition-colors"
+            className="px-5 py-2.5 rounded-lg border border-violet-300 text-violet-600 text-sm hover:bg-violet-100 transition-colors"
           >
             Take the Quiz
           </Link>
@@ -92,11 +92,11 @@ export default function RecommendationsPage() {
   return (
     <div className="max-w-4xl mx-auto px-4 py-8">
       <div className="flex items-center justify-between mb-6">
-        <h1 className="font-serif text-3xl font-medium text-stone-900">Recommendations</h1>
+        <h1 className="font-sans font-bold text-3xl font-medium text-violet-900">Recommendations</h1>
         {state.votes.length > 0 && (
           <button
             onClick={refine}
-            className="px-4 py-2 rounded-lg bg-stone-900 text-white text-sm font-medium hover:bg-stone-700 transition-colors"
+            className="px-4 py-2 rounded-lg bg-violet-900 text-white text-sm font-medium hover:bg-violet-700 transition-colors"
           >
             Refine ({state.votes.length} vote{state.votes.length !== 1 ? "s" : ""})
           </button>
@@ -110,8 +110,8 @@ export default function RecommendationsPage() {
 
         return (
           <div key={seedId} className="mb-8">
-            <h2 className="font-serif italic text-lg text-stone-500 mb-3">
-              Because you liked <span className="text-stone-700 not-italic font-medium">{seedName}</span>
+            <h2 className="font-sans font-bold italic text-lg text-violet-500 mb-3">
+              Because you liked <span className="text-violet-700 not-italic font-medium">{seedName}</span>
             </h2>
             <div className="grid gap-3">
               {recList.map(([recId, sim]) => {
@@ -124,7 +124,7 @@ export default function RecommendationsPage() {
                     perfume={p}
                     action={
                       <div className="flex items-center gap-1">
-                        <span className="text-[10px] text-stone-400 mr-1">
+                        <span className="text-[10px] text-violet-400 mr-1">
                           {(sim * 100).toFixed(0)}%
                         </span>
                         <button
@@ -132,7 +132,7 @@ export default function RecommendationsPage() {
                           className={`w-8 h-8 rounded-full flex items-center justify-center text-sm transition-colors ${
                             existingVote?.vote === "up"
                               ? "bg-green-100 text-green-700"
-                              : "bg-stone-100 text-stone-400 hover:bg-green-50 hover:text-green-600"
+                              : "bg-violet-100 text-violet-400 hover:bg-green-50 hover:text-green-600"
                           }`}
                           title="More like this"
                         >
@@ -143,7 +143,7 @@ export default function RecommendationsPage() {
                           className={`w-8 h-8 rounded-full flex items-center justify-center text-sm transition-colors ${
                             existingVote?.vote === "down"
                               ? "bg-red-100 text-red-700"
-                              : "bg-stone-100 text-stone-400 hover:bg-red-50 hover:text-red-600"
+                              : "bg-violet-100 text-violet-400 hover:bg-red-50 hover:text-red-600"
                           }`}
                           title="Not for me"
                         >

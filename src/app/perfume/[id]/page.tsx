@@ -63,7 +63,7 @@ export default function PerfumeDetailPage({
 
   if (loading) {
     return (
-      <div className="max-w-3xl mx-auto px-4 py-16 text-center text-stone-500">
+      <div className="max-w-3xl mx-auto px-4 py-16 text-center text-violet-500">
         Loading...
       </div>
     );
@@ -71,7 +71,7 @@ export default function PerfumeDetailPage({
 
   if (!perfume) {
     return (
-      <div className="max-w-3xl mx-auto px-4 py-16 text-center text-stone-500">
+      <div className="max-w-3xl mx-auto px-4 py-16 text-center text-violet-500">
         Perfume not found.
       </div>
     );
@@ -89,12 +89,12 @@ export default function PerfumeDetailPage({
       <div className="mb-8">
         <div className="flex items-start justify-between gap-4">
           <div>
-            <h1 className="font-serif text-3xl md:text-4xl font-medium text-stone-900">
+            <h1 className="font-sans font-bold text-3xl md:text-4xl font-medium text-violet-900">
               {perfume.n}
-              {genderSym && <span className="text-stone-400 ml-2 text-2xl">{genderSym}</span>}
+              {genderSym && <span className="text-violet-400 ml-2 text-2xl">{genderSym}</span>}
             </h1>
             {perfume.b && (
-              <p className="text-stone-500 mt-1">{perfume.b}</p>
+              <p className="text-violet-500 mt-1">{perfume.b}</p>
             )}
           </div>
           <button
@@ -105,20 +105,20 @@ export default function PerfumeDetailPage({
             }
             className={`flex-shrink-0 px-4 py-2 rounded-lg text-sm font-medium transition-colors ${
               isPicked
-                ? "border border-stone-300 text-stone-600 hover:bg-stone-100"
-                : "bg-stone-900 text-white hover:bg-stone-700"
+                ? "border border-violet-300 text-violet-600 hover:bg-violet-100"
+                : "bg-violet-900 text-white hover:bg-violet-700"
             }`}
           >
             {isPicked ? "Remove from Picks" : "+ Add to Picks"}
           </button>
         </div>
-        <div className="flex items-center gap-3 mt-3 text-sm text-stone-500">
-          <span className="font-medium text-stone-700">{perfume.r.toFixed(1)} / 5</span>
-          <span className="text-stone-300">|</span>
+        <div className="flex items-center gap-3 mt-3 text-sm text-violet-500">
+          <span className="font-medium text-violet-700">{perfume.r.toFixed(1)} / 5</span>
+          <span className="text-violet-300">|</span>
           <span>{perfume.rc.toLocaleString()} ratings</span>
           {perfume.g && (
             <>
-              <span className="text-stone-300">|</span>
+              <span className="text-violet-300">|</span>
               <span className="capitalize">{perfume.g}</span>
             </>
           )}
@@ -127,36 +127,36 @@ export default function PerfumeDetailPage({
 
       {/* Accords */}
       <div className="mb-8">
-        <h2 className="font-serif text-xl font-medium text-stone-900 mb-3">Accords</h2>
+        <h2 className="font-sans font-bold text-xl font-medium text-violet-900 mb-3">Accords</h2>
         <div className="space-y-2">
           {accords.map(({ name, weight }, i) => (
             <div key={name} className="flex items-center gap-3">
               <AccordPill accord={name} large={i < 2} />
-              <div className="flex-1 h-2 bg-stone-100 rounded-full overflow-hidden">
+              <div className="flex-1 h-2 bg-violet-100 rounded-full overflow-hidden">
                 <div
-                  className="h-full bg-stone-400 rounded-full transition-all"
+                  className="h-full bg-violet-400 rounded-full transition-all"
                   style={{ width: `${weight}%` }}
                 />
               </div>
-              <span className="text-xs text-stone-400 w-8 text-right">{weight}%</span>
+              <span className="text-xs text-violet-400 w-8 text-right">{weight}%</span>
             </div>
           ))}
         </div>
       </div>
 
       {/* Personal Notes Form */}
-      <div className="mb-8 bg-white border border-stone-200 rounded-lg p-5">
-        <h2 className="font-serif text-xl font-medium text-stone-900 mb-3">Your Notes</h2>
+      <div className="mb-8 bg-white border border-violet-200 rounded-lg p-5">
+        <h2 className="font-sans font-bold text-xl font-medium text-violet-900 mb-3">Your Notes</h2>
         <textarea
           value={notes}
           onChange={(e) => setNotes(e.target.value)}
           placeholder="Add your personal notes about this perfume..."
           rows={3}
-          className="w-full px-3 py-2 bg-stone-50 border border-stone-200 rounded-md text-sm text-stone-900 placeholder:text-stone-400 focus:outline-none focus:border-stone-400 resize-none"
+          className="w-full px-3 py-2 bg-violet-50 border border-violet-200 rounded-md text-sm text-violet-900 placeholder:text-violet-400 focus:outline-none focus:border-violet-400 resize-none"
         />
         <div className="flex items-center gap-4 mt-3">
           <div className="flex items-center gap-2">
-            <span className="text-sm text-stone-500">Your rating:</span>
+            <span className="text-sm text-violet-500">Your rating:</span>
             <div className="flex gap-1">
               {[1, 2, 3, 4, 5].map((star) => (
                 <button
@@ -164,8 +164,8 @@ export default function PerfumeDetailPage({
                   onClick={() => setUserRating(star === userRating ? null : star)}
                   className={`w-7 h-7 rounded-full text-sm transition-colors ${
                     userRating && star <= userRating
-                      ? "bg-stone-900 text-white"
-                      : "bg-stone-100 text-stone-400 hover:bg-stone-200"
+                      ? "bg-violet-900 text-white"
+                      : "bg-violet-100 text-violet-400 hover:bg-violet-200"
                   }`}
                 >
                   {star}
@@ -175,7 +175,7 @@ export default function PerfumeDetailPage({
           </div>
           <button
             onClick={saveNote}
-            className="ml-auto px-4 py-1.5 rounded-md bg-stone-900 text-white text-sm hover:bg-stone-700 transition-colors"
+            className="ml-auto px-4 py-1.5 rounded-md bg-violet-900 text-white text-sm hover:bg-violet-700 transition-colors"
           >
             Save
           </button>
@@ -185,7 +185,7 @@ export default function PerfumeDetailPage({
       {/* Similar Perfumes */}
       {similar.length > 0 && (
         <div>
-          <h2 className="font-serif text-xl font-medium text-stone-900 mb-3">Similar Perfumes</h2>
+          <h2 className="font-sans font-bold text-xl font-medium text-violet-900 mb-3">Similar Perfumes</h2>
           <div className="grid gap-3">
             {similar.map((p) => (
               <PerfumeCard key={p.id} perfume={p} />
