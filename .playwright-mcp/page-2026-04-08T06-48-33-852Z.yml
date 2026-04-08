@@ -1,0 +1,54 @@
+- generic [active] [ref=e1]:
+  - navigation [ref=e2]:
+    - generic [ref=e3]:
+      - link "The Common Nose" [ref=e4] [cursor=pointer]:
+        - /url: /
+      - generic [ref=e5]:
+        - link "Home" [ref=e6] [cursor=pointer]:
+          - /url: /
+        - link "Explore" [ref=e7] [cursor=pointer]:
+          - /url: /explore
+        - link "Build" [ref=e8] [cursor=pointer]:
+          - /url: /build
+        - link "Quiz" [ref=e9] [cursor=pointer]:
+          - /url: /quiz
+        - link "Recs" [ref=e10] [cursor=pointer]:
+          - /url: /recommendations
+  - main [ref=e11]:
+    - generic [ref=e12]:
+      - generic [ref=e13]:
+        - heading "The Common Nose" [level=1] [ref=e14]
+        - paragraph [ref=e15]: Tell us your favourites. We'll find you something new.
+        - paragraph [ref=e16]: A recommendation engine built on 68,000 fragrances. We use accord-based similarity — how perfumes actually smell — to find your next favourite scent.
+      - generic [ref=e17]:
+        - link "🔍 I know what I like Search for your favourite perfumes, pick up to 3, and get personalised recommendations based on their accord profiles." [ref=e18] [cursor=pointer]:
+          - /url: /explore
+          - generic [ref=e19]: 🔍
+          - heading "I know what I like" [level=2] [ref=e20]
+          - paragraph [ref=e21]: Search for your favourite perfumes, pick up to 3, and get personalised recommendations based on their accord profiles.
+        - link "🎨 I know what I want Describe the scent you're looking for — pick the leading accords and trailing notes, and we'll find perfumes that match." [ref=e22] [cursor=pointer]:
+          - /url: /build
+          - generic [ref=e23]: 🎨
+          - heading "I know what I want" [level=2] [ref=e24]
+          - paragraph [ref=e25]: Describe the scent you're looking for — pick the leading accords and trailing notes, and we'll find perfumes that match.
+        - link "✨ I'm new to perfume Take a short quiz about your preferences and we'll match you with accords and starter perfumes tailored to your taste." [ref=e26] [cursor=pointer]:
+          - /url: /quiz
+          - generic [ref=e27]: ✨
+          - heading "I'm new to perfume" [level=2] [ref=e28]
+          - paragraph [ref=e29]: Take a short quiz about your preferences and we'll match you with accords and starter perfumes tailored to your taste.
+      - generic [ref=e30]:
+        - heading "How it works" [level=2] [ref=e31]
+        - generic [ref=e32]:
+          - generic [ref=e33]:
+            - generic [ref=e34]: "1"
+            - heading "Pick your perfumes" [level=3] [ref=e35]
+            - paragraph [ref=e36]: Search our catalog of 68,000 fragrances or take the quiz to discover your accord profile.
+          - generic [ref=e37]:
+            - generic [ref=e38]: "2"
+            - heading "Get recommendations" [level=3] [ref=e39]
+            - paragraph [ref=e40]: We analyse the accord DNA of your picks and find similar fragrances using cosine similarity.
+          - generic [ref=e41]:
+            - generic [ref=e42]: "3"
+            - heading "Refine with votes" [level=3] [ref=e43]
+            - paragraph [ref=e44]: Thumbs up or down on recommendations. We update your preference profile and refine the results.
+  - contentinfo [ref=e45]: The Common Nose — Built by Ian Vo

@@ -16,6 +16,7 @@ A multi-page Next.js + Tailwind app that recommends perfumes based on accord-bas
 | `/` | Landing page — hero, "how it works", three paths (explore / build / quiz) |
 | `/explore` | Search + accord filter builder + picks management |
 | `/build` | Scent builder — pick leading accords + trailing accords, find matching perfumes |
+| `/info` | Accord encyclopedia — descriptions, common notes, co-occurrence stats |
 | `/quiz` | 5-question guided quiz mapping preferences to accords |
 | `/perfume/[id]` | Dynamic route — full perfume detail, personal notes form, similar perfumes |
 | `/recommendations` | Grouped recommendations with thumbs up/down voting and Dirichlet refinement |

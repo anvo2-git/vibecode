@@ -9,6 +9,7 @@ const NAV_ITEMS = [
   { href: "/explore", label: "Explore" },
   { href: "/build", label: "Build" },
   { href: "/quiz", label: "Quiz" },
+  { href: "/info", label: "Info" },
   { href: "/recommendations", label: "Recs" },
 ];
 
