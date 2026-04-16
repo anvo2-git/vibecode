@@ -3,20 +3,24 @@
 import Link from "next/link";
 import Image from "next/image";
 import { usePathname } from "next/navigation";
+import { Show, SignInButton, UserButton, useAuth } from "@clerk/nextjs";
 import { useApp } from "@/lib/context";
 
 const NAV_ITEMS = [
   { href: "/", label: "Home" },
+  { href: "/today", label: "Today" },
   { href: "/explore", label: "Explore" },
   { href: "/build", label: "Build" },
   { href: "/quiz", label: "Quiz" },
   { href: "/info", label: "Info" },
   { href: "/recommendations", label: "Recs" },
+  { href: "/favorites", label: "Favorites", auth: true },
 ];
 
 export function Nav() {
   const pathname = usePathname();
   const { state } = useApp();
+  const { userId } = useAuth();
   const pickCount = state.picks.length;
 
   return (
@@ -27,7 +31,7 @@ export function Nav() {
           <span className="text-xl font-bold text-violet-900">The Common Nose</span>
         </Link>
         <div className="flex items-center gap-1">
-          {NAV_ITEMS.map(({ href, label }) => {
+          {NAV_ITEMS.filter((item) => !("auth" in item && item.auth) || userId).map(({ href, label }) => {
             const isActive = href === "/" ? pathname === "/" : pathname.startsWith(href);
             return (
               <Link
@@ -48,6 +52,18 @@ export function Nav() {
               </Link>
             );
           })}
+          <div className="ml-2 flex items-center">
+            <Show when="signed-out">
+              <SignInButton mode="modal">
+                <button className="px-3 py-1.5 rounded-md text-sm text-violet-600 hover:text-violet-900 hover:bg-violet-100 transition-colors">
+                  Sign in
+                </button>
+              </SignInButton>
+            </Show>
+            <Show when="signed-in">
+              <UserButton />
+            </Show>
+          </div>
         </div>
       </div>
     </nav>

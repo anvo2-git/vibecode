@@ -6,6 +6,7 @@ import { recommendForSeed } from "@/lib/similarity";
 import { useApp } from "@/lib/context";
 import { AccordPill } from "@/components/AccordPill";
 import { PerfumeCard } from "@/components/PerfumeCard";
+import { FavoriteButton } from "@/components/FavoriteButton";
 import { GENDER_SYMBOL } from "@/lib/accords";
 import { getPerfume } from "@/lib/perfume-lookup";
 import type { Perfume } from "@/lib/types";
@@ -23,6 +24,12 @@ export default function PerfumeDetailPage({
   const [similar, setSimilar] = useState<Perfume[]>([]);
   const [notes, setNotes] = useState("");
   const [userRating, setUserRating] = useState<number | null>(null);
+  const [brandInfo, setBrandInfo] = useState<{
+    title: string;
+    extract: string;
+    thumbnail: string | null;
+    url: string | null;
+  } | null>(null);
 
   const perfumeId = parseInt(id, 10);
   const perfume = getPerfume(perfumeId, catalog, state.scrapedPerfumes) ?? null;
@@ -44,6 +51,36 @@ export default function PerfumeDetailPage({
       setUserRating(existing.rating);
     }
   }, [state.personalNotes, perfumeId]);
+
+  // Fetch Wikipedia brand info (external API, via our server route)
+  useEffect(() => {
+    if (!perfume?.b) {
+      setBrandInfo(null);
+      return;
+    }
+    let cancelled = false;
+    fetch(`/api/brand/${encodeURIComponent(perfume.b)}`)
+      .then((r) => r.json())
+      .then((data) => {
+        if (cancelled) return;
+        if (data.found) {
+          setBrandInfo({
+            title: data.title,
+            extract: data.extract,
+            thumbnail: data.thumbnail,
+            url: data.url,
+          });
+        } else {
+          setBrandInfo(null);
+        }
+      })
+      .catch(() => {
+        if (!cancelled) setBrandInfo(null);
+      });
+    return () => {
+      cancelled = true;
+    };
+  }, [perfume?.b]);
 
   // Compute similar perfumes
   useEffect(() => {
@@ -97,20 +134,23 @@ export default function PerfumeDetailPage({
               <p className="text-violet-500 mt-1">{perfume.b}</p>
             )}
           </div>
-          <button
-            onClick={() =>
-              isPicked
-                ? dispatch({ type: "REMOVE_PICK", perfumeId })
-                : dispatch({ type: "ADD_PICK", perfumeId })
-            }
-            className={`flex-shrink-0 px-4 py-2 rounded-lg text-sm font-medium transition-colors ${
-              isPicked
-                ? "border border-violet-300 text-violet-600 hover:bg-violet-100"
-                : "bg-violet-900 text-white hover:bg-violet-700"
-            }`}
-          >
-            {isPicked ? "Remove from Picks" : "+ Add to Picks"}
-          </button>
+          <div className="flex items-center gap-2 flex-shrink-0">
+            <FavoriteButton perfumeId={perfumeId} />
+            <button
+              onClick={() =>
+                isPicked
+                  ? dispatch({ type: "REMOVE_PICK", perfumeId })
+                  : dispatch({ type: "ADD_PICK", perfumeId })
+              }
+              className={`px-4 py-2 rounded-lg text-sm font-medium transition-colors ${
+                isPicked
+                  ? "border border-violet-300 text-violet-600 hover:bg-violet-100"
+                  : "bg-violet-900 text-white hover:bg-violet-700"
+              }`}
+            >
+              {isPicked ? "Remove from Picks" : "+ Add to Picks"}
+            </button>
+          </div>
         </div>
         <div className="flex items-center gap-3 mt-3 text-sm text-violet-500">
           <span className="font-medium text-violet-700">{perfume.r.toFixed(1)} / 5</span>
@@ -143,6 +183,40 @@ export default function PerfumeDetailPage({
           ))}
         </div>
       </div>
+
+      {/* About the house — from Wikipedia via /api/brand/[name] */}
+      {brandInfo && brandInfo.extract && (
+        <div className="mb-8 bg-white border border-violet-200 rounded-lg p-5">
+          <div className="flex items-start justify-between gap-4 mb-3">
+            <h2 className="font-sans font-bold text-xl font-medium text-violet-900">
+              About {brandInfo.title}
+            </h2>
+            {brandInfo.url && (
+              <a
+                href={brandInfo.url}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="text-xs text-violet-500 hover:text-violet-900 underline-offset-4 hover:underline flex-shrink-0 pt-1"
+              >
+                Wikipedia →
+              </a>
+            )}
+          </div>
+          <div className="flex items-start gap-4">
+            {brandInfo.thumbnail && (
+              // eslint-disable-next-line @next/next/no-img-element
+              <img
+                src={brandInfo.thumbnail}
+                alt={brandInfo.title}
+                className="w-20 h-20 object-cover rounded-md border border-violet-100 flex-shrink-0"
+              />
+            )}
+            <p className="text-sm text-violet-700 leading-relaxed">
+              {brandInfo.extract}
+            </p>
+          </div>
+        </div>
+      )}
 
       {/* Personal Notes Form */}
       <div className="mb-8 bg-white border border-violet-200 rounded-lg p-5">

@@ -2,6 +2,7 @@
 
 import Link from "next/link";
 import { AccordPill } from "./AccordPill";
+import { FavoriteButton } from "./FavoriteButton";
 import { GENDER_SYMBOL } from "@/lib/accords";
 import type { Perfume } from "@/lib/types";
 
@@ -30,7 +31,10 @@ export function PerfumeCard({
             <p className="text-xs text-violet-500 mt-0.5">{perfume.b}</p>
           )}
         </Link>
-        {action && <div className="flex-shrink-0">{action}</div>}
+        <div className="flex-shrink-0 flex items-center gap-1">
+          <FavoriteButton perfumeId={perfume.id} />
+          {action}
+        </div>
       </div>
       <div className="flex items-center gap-2 mt-2 text-xs text-violet-500">
         <span>{perfume.r.toFixed(1)} / 5</span>

@@ -1,4 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
+import { auth } from "@clerk/nextjs/server";
+import { createServerSupabaseClient } from "@/lib/supabase/server";
 
 /**
  * Scrape a Fragrantica perfume page using a headless browser.
@@ -7,10 +9,24 @@ import { NextRequest, NextResponse } from "next/server";
  * - On Vercel: uses @sparticuz/chromium + puppeteer-core
  * - Locally: uses Playwright's managed Chromium (npx playwright install)
  *
+ * Caching layer: before scraping we check the `scraped_perfumes` table in
+ * Supabase. On cache miss we scrape, then upsert the result so future calls
+ * (by any user) skip the ~10s scrape. Insert requires a signed-in user per
+ * RLS; anonymous callers still benefit from reads of what others have scraped.
+ *
  * Usage: GET /api/scrape?url=https://www.fragrantica.com/perfume/Brand/Name-123.html
  */
 
 export const maxDuration = 30;
+
+// Strip protocol + trailing slash/query so the same perfume normalizes to one key
+function normalizeSourceKey(url: string): string {
+  return url
+    .toLowerCase()
+    .replace(/^https?:\/\//, "")
+    .split("?")[0]
+    .replace(/\/+$/, "");
+}
 
 async function scrapeWithPlaywright(url: string) {
   const { firefox } = await import("playwright");
@@ -101,6 +117,29 @@ export async function GET(request: NextRequest) {
     );
   }
 
+  const sourceKey = normalizeSourceKey(url);
+  const supabase = await createServerSupabaseClient();
+
+  // 1. Cache lookup — read-all RLS, works for anonymous and signed-in users.
+  const { data: cached } = await supabase
+    .from("scraped_perfumes")
+    .select("name, brand, gender, rating, rating_count, accord_weights")
+    .eq("source_key", sourceKey)
+    .maybeSingle();
+
+  if (cached) {
+    return NextResponse.json({
+      name: cached.name,
+      brand: cached.brand ?? "",
+      gender: cached.gender ?? "",
+      rating: cached.rating ?? 0,
+      ratingCount: cached.rating_count ?? 0,
+      accords: (cached.accord_weights as Record<string, number>) ?? {},
+      cached: true,
+    });
+  }
+
+  // 2. Cache miss — scrape live
   try {
     const isVercel = !!(process.env.VERCEL || process.env.AWS_LAMBDA_FUNCTION_NAME);
     const data = isVercel
@@ -114,13 +153,43 @@ export async function GET(request: NextRequest) {
     if (brand) name = name.replace(new RegExp(brand, "i"), "").trim();
     if (data.gender) name = name.replace(data.gender, "").trim();
 
+    const finalName = name || data.fullName;
+
+    // 3. Best-effort cache write. RLS requires a Clerk `sub` claim — anonymous
+    // scrapes silently fail the insert, which is fine. Race condition with
+    // another concurrent scrape is handled by source_key's unique constraint
+    // via ignoreDuplicates.
+    const { userId } = await auth();
+    if (userId) {
+      const { error: insertErr } = await supabase
+        .from("scraped_perfumes")
+        .upsert(
+          {
+            source_key: sourceKey,
+            name: finalName,
+            brand: brand || null,
+            gender: data.gender || null,
+            rating: data.rating || null,
+            rating_count: data.ratingCount || null,
+            accord_weights: data.accords,
+            source_url: url,
+            scraped_by: userId,
+          },
+          { onConflict: "source_key", ignoreDuplicates: true }
+        );
+      if (insertErr) {
+        console.warn("scraped_perfumes upsert failed:", insertErr.message);
+      }
+    }
+
     return NextResponse.json({
-      name: name || data.fullName,
+      name: finalName,
       brand,
       gender: data.gender,
       rating: data.rating,
       ratingCount: data.ratingCount,
       accords: data.accords,
+      cached: false,
     });
   } catch (err) {
     const message = err instanceof Error ? err.message : JSON.stringify(err);

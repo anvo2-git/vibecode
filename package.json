@@ -3,13 +3,17 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
-    "dev": "next dev",
-    "build": "next build",
+    "dev": "next dev --webpack",
+    "build": "next build --webpack",
     "start": "next start",
-    "lint": "eslint"
+    "lint": "eslint",
+    "postinstall": "node scripts/patch-esm.js"
   },
   "dependencies": {
+    "@clerk/nextjs": "^7.2.1",
     "@sparticuz/chromium": "^143.0.4",
+    "@supabase/ssr": "^0.10.2",
+    "@supabase/supabase-js": "^2.103.2",
     "fuse.js": "^7.3.0",
     "next": "16.2.2",
     "playwright": "^1.59.1",

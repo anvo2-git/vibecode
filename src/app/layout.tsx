@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import { ClerkProvider } from "@clerk/nextjs";
 import "./globals.css";
 import { ClientLayout } from "./client-layout";
 
@@ -21,7 +22,9 @@ export default function RootLayout({
         />
       </head>
       <body className="min-h-full flex flex-col font-sans">
-        <ClientLayout>{children}</ClientLayout>
+        <ClerkProvider>
+          <ClientLayout>{children}</ClientLayout>
+        </ClerkProvider>
       </body>
     </html>
   );

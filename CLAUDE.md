@@ -7,7 +7,9 @@ A multi-page Next.js + Tailwind app that recommends perfumes based on accord-bas
 - **Next.js 16** (App Router, TypeScript)
 - **Tailwind CSS v4**
 - **Fuse.js** for fuzzy search
-- **React Context** for ephemeral client-side state (no database)
+- **Supabase** for persistent user data (favorites, scraped perfume cache)
+- **Clerk** for authentication (Clerk → Supabase Third-Party Auth for RLS)
+- **React Context** for ephemeral client-side state (picks, votes, quiz)
 
 ## Pages
 
@@ -20,7 +22,13 @@ A multi-page Next.js + Tailwind app that recommends perfumes based on accord-bas
 | `/quiz` | 5-question guided quiz mapping preferences to accords |
 | `/perfume/[id]` | Dynamic route — full perfume detail, personal notes form, similar perfumes |
 | `/recommendations` | Grouped recommendations with thumbs up/down voting and Dirichlet refinement |
+| `/favorites` | User's saved perfumes (requires sign-in, backed by Supabase) |
+| `/today` | Weather-based scent suggestions — auto-detects location via browser geolocation, falls back to manual city input; powered by Open-Meteo |
+| `/sign-in` | Clerk-hosted sign-in page (catches `/sign-in` route) |
+| `/sign-up` | Clerk-hosted sign-up page |
 | `/api/scrape` | Server-side Fragrantica scrape endpoint (fallback for unknown perfumes) |
+| `/api/weather` | Server proxy to Open-Meteo — converts temp + weather code to suggested accords |
+| `/api/brand/[name]` | Server proxy to Wikipedia REST API — returns brand summary + thumbnail |
 
 ## Data Model
 
@@ -28,6 +36,11 @@ A multi-page Next.js + Tailwind app that recommends perfumes based on accord-bas
 - `perfumes.json` — 68,511 perfumes with compact keys (`n`=name, `b`=brand, `g`=gender, `r`=rating, `rc`=ratingCount, `aw`=accordWeights as Record<string, 0-100>)
 - `accord-lookup.json` — maps accord names to arrays of perfume IDs for fast candidate filtering
 - `accord-labels.json` — ordered list of all 90 accord names
+
+### Supabase (persistent, per-user)
+- `favorites` — `(user_id, perfume_id)` PK, RLS scoped to own rows via Clerk JWT `sub` claim
+- `scraped_perfumes` — shared cache of Fragrantica scrapes (anyone can read, signed-in users insert)
+- `perfume_notes` — per-user notes (exists in DB, not yet wired to frontend)
 
 ### Client State (React Context, ephemeral)
 - **Picks** — up to 3 seed perfumes for recommendations
