@@ -63,10 +63,10 @@ export function FavoritesProvider({ children }: { children: ReactNode }) {
 
       supabase
         .from("favorites")
-        .insert({ perfume_id: String(perfumeId) })
+        .insert({ user_id: userId, perfume_id: String(perfumeId) })
         .then(({ error }) => {
           if (error) {
-            console.warn("Failed to add favorite:", error.message);
+            console.error("Failed to add favorite:", error.message, error.code);
             // Revert on failure
             setFavoriteIds((prev) => {
               const next = new Set(prev);
@@ -94,9 +94,10 @@ export function FavoritesProvider({ children }: { children: ReactNode }) {
         .from("favorites")
         .delete()
         .eq("perfume_id", String(perfumeId))
+        .eq("user_id", userId)
         .then(({ error }) => {
           if (error) {
-            console.warn("Failed to remove favorite:", error.message);
+            console.error("Failed to remove favorite:", error.message, error.code);
             // Revert on failure
             setFavoriteIds((prev) => new Set(prev).add(perfumeId));
           }
