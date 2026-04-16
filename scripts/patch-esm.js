@@ -21,6 +21,10 @@ const patches = [
   { mjs: "@clerk/backend/dist/jwt/index.mjs", js: "@clerk/backend/dist/jwt/index.js" },
   // @supabase/postgrest-js (only has .cjs, no .js)
   { mjs: "@supabase/postgrest-js/dist/index.mjs", cjs: "@supabase/postgrest-js/dist/index.cjs" },
+  // @supabase type declaration files (.d.mts → .d.cts)
+  { mjs: "@supabase/supabase-js/dist/index.d.mts",    js: "@supabase/supabase-js/dist/index.d.cts" },
+  { mjs: "@supabase/supabase-js/dist/cors.d.mts",     js: "@supabase/supabase-js/dist/cors.d.cts" },
+  { mjs: "@supabase/postgrest-js/dist/index.d.mts",   js: "@supabase/postgrest-js/dist/index.d.cts" },
 ];
 
 let patched = 0;

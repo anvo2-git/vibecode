@@ -18,6 +18,8 @@ interface FavoritesContextValue {
   isLoading: boolean;
 }
 
+type SupabaseError = { message: string; code?: string } | null;
+
 const FavoritesContext = createContext<FavoritesContextValue | null>(null);
 
 export function FavoritesProvider({ children }: { children: ReactNode }) {
@@ -39,7 +41,7 @@ export function FavoritesProvider({ children }: { children: ReactNode }) {
     supabase
       .from("favorites")
       .select("perfume_id")
-      .then(({ data, error }) => {
+      .then(({ data, error }: { data: { perfume_id: string }[] | null; error: SupabaseError }) => {
         if (cancelled) return;
         if (error) {
           console.warn("Failed to load favorites:", error.message);
@@ -64,7 +66,7 @@ export function FavoritesProvider({ children }: { children: ReactNode }) {
       supabase
         .from("favorites")
         .insert({ user_id: userId, perfume_id: String(perfumeId) })
-        .then(({ error }) => {
+        .then(({ error }: { data: null; error: SupabaseError }) => {
           if (error) {
             console.error("Failed to add favorite:", error.message, error.code);
             // Revert on failure
@@ -95,7 +97,7 @@ export function FavoritesProvider({ children }: { children: ReactNode }) {
         .delete()
         .eq("perfume_id", String(perfumeId))
         .eq("user_id", userId)
-        .then(({ error }) => {
+        .then(({ error }: { data: null; error: SupabaseError }) => {
           if (error) {
             console.error("Failed to remove favorite:", error.message, error.code);
             // Revert on failure
