@@ -3,8 +3,8 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
-    "dev": "next dev --webpack",
-    "build": "next build --webpack",
+    "dev": "LD_LIBRARY_PATH=$HOME/.local/lib next dev --webpack",
+    "build": "LD_LIBRARY_PATH=$HOME/.local/lib next build --webpack",
     "start": "next start",
     "lint": "eslint",
     "postinstall": "node scripts/patch-esm.js"
